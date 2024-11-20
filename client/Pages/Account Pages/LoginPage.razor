@@ -1,9 +1,12 @@
 ﻿@page "/identity/account/login"
+@using Syncfusion.Blazor.Popups
 @layout AuthenticationLayout
+@inject SfDialogService DialogService 
 <div class="container">
     <div class="row">
         <div class="col-lg-4"></div>
         <div class="col-lg-4">
+            
             <EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
                 <DataAnnotationsValidator/>
                 
@@ -29,7 +32,10 @@
                         <div class="form-group mt-3">
                             @if (ShowButtonSpinner)
                             {
-                                <ButtonLoadingSpinner></ButtonLoadingSpinner>
+                                <button class=" btn btn-primary float-end" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Processing...
+                                </button>
                             }
                             else
                             {
@@ -54,21 +60,43 @@
 {
     public bool ShowButtonSpinner { get; set; } = false;
     Login User = new Login();
-
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        await UserAuthentication();
+    }
     async Task HandleLogin()
     {
         ShowButtonSpinner = true;
         var result = await accountService.SignInAsync(User);
         if(result.Flag)
         {
-           
-            var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
-            await customAuthStateProvider.UpdateAuthenticationState(new UserSession() { Token = result.Token, RefreshToken = result.RefreshToken });
+           await DisplayDialog1(result.Message,"Login Success");
+           var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+           await customAuthStateProvider.UpdateAuthenticationState(new UserSession() { Token = result.Token, RefreshToken = result.RefreshToken });
             NavManager.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            await DisplayDialog1(result.Message, "Login Failed");
         }
         ShowButtonSpinner = false;
 
     }
+    private async Task DisplayDialog1(string content, string title)
+    {
+       
+        await DialogService.AlertAsync(content, title);
+        
+    }
+    private async Task UserAuthentication()
+    {
+        var user = (await AuthenticationState).User;
+        bool isUserAuthenticated = user.Identity!.IsAuthenticated;
+        if (isUserAuthenticated)
+            NavManager.NavigateTo("/home/dashboard");
+    }
+ 
 
 
 }

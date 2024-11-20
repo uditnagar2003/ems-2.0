@@ -1,14 +1,14 @@
 ﻿@page "/identity/account/register"
+@using Syncfusion.Blazor.Popups
 @layout AuthenticationLayout
-@using client.Pages.
+@inject SfDialogService DialogService
 <div class="container">
     <div class="row">
         <div class="col-lg-4"></div>
         <div class="col-lg-4">
             <EditForm Enhance Model="User" OnValidSubmit="HandleRegistration">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <div class="card bg-dark" style="opacity:0.8; margin-top:25%; border-radius:10px; color:white;font-weight:bold">
+                <DataAnnotationsValidator/>
+                 <div class="card bg-dark" style="opacity:0.8; margin-top:25%; border-radius:10px; color:white;font-weight:bold">
                     <div class="card-header text-center fs-5 mb-2">Register User</div>
                     <div class="container">
                         <div class="row">
@@ -38,7 +38,11 @@
                         <div class="form-group mt-3">
                             @if (ShowLoadingButton)
                             {
-                                <ButtonLoadingSpinner></ButtonLoadingSpinner>
+
+                                <button class=" btn btn-primary float-end" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Processing...
+                                </button>
                             }
                             else
                             {
@@ -63,18 +67,38 @@
 {
     public bool ShowLoadingButton { get; set;  } = false;
     Register User = new();
-
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        await UserAuthentication();
+    }
+    
     async Task HandleRegistration()
     {
         ShowLoadingButton = true;
         var result = await accountService.CreateAsync(User);
-        if (result.Flag||true)
+        if (result.Flag)
         {
+              await DisplayDialog(result.Message, "Success");
             NavManager.NavigateTo("/identity/account/login", forceLoad: true);
         }
-        
-            ShowLoadingButton = false;
-        
-    }
+        else
+        {
+            await DisplayDialog(result.Message, "Alert");
+        }
 
+        ShowLoadingButton = false;
+
+    }
+    private async Task DisplayDialog(string content, string title )
+    {
+        await DialogService.AlertAsync(content, title);
+    }
+    private async Task UserAuthentication()
+    {
+        var user = (await AuthenticationState).User;
+        if (user.Identity!.IsAuthenticated)
+            NavManager.NavigateTo("/identity/account/login");
+    }
+   
 }

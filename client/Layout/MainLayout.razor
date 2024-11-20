@@ -1,8 +1,10 @@
 ﻿@inherits LayoutComponentBase
 @using BaseLibrary.DTOs;
+@using Microsoft.AspNetCore.Authorization
 @using ClientLibrary.Helpers;
 @inject AuthenticationStateProvider AuthStateProvider 
 @using Microsoft.AspNetCore.Components.Authorization;
+@attribute [Authorize]
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -10,21 +12,18 @@
 
     <main>
         <div class="top-row px-4">
-            <AuthorizeView>
-                <Authorized>
-                    <a class="btn btn-none text-danger" @onclick="LogoutClicked">Logout</a>
-
-                </Authorized>
-            </AuthorizeView>
+          <client.Pages.Other_Pages.ProfileDropDown></client.Pages.Other_Pages.ProfileDropDown>
             
            
         </div>
 
         <article class="content px-4">
             @Body
+            <Syncfusion.Blazor.Popups.SfDialogProvider />
         </article>
     </main>
 </div>
+
 
 @code{
 
