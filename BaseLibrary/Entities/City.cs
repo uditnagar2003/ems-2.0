@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaseLibrary.Entities
 {
-    public class City
+    public class City:BaseEntity
     {
         //Many to one relationship with Country
         public Country? Country { get; set; }
