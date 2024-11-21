@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace BaseLibrary.Entities
 {
-    public class GeneralDepartment : BaseEntity
+    public class Country :BaseEntity
     {
-        // one to many relationship with department
-
-        public List<Department> Departments { get; set; }
-
+        //one to many relationshop with city
+        public List<City>? cities {  get; set; }
     }
+
 }

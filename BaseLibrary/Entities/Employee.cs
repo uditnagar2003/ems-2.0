@@ -1,11 +1,9 @@
 ﻿
 namespace BaseLibrary.Entities
 {
-    public class Employee 
+    public class Employee :BaseEntity
     {
-        public int id { get; set; }
-        public string? name { get; set; }
-
+        
         public string? CivilId { get; set; }
         public string? FileNumber { get; set; }
         public string? FullName { get; set; }
@@ -15,11 +13,8 @@ namespace BaseLibrary.Entities
         public String? Photo {  get; set; }
         public string? Other {  get; set; }
 
-        // Relationship : Many to One
-        public GeneralDepartment? GeneralDepartment { get; set; }
-        public int GenralDepartmentId { get; set; }
-        public Department? Department { get; set; }
-        public int DepartmentId { get; set; }
+        // Relationship : Many to One  with branch
+       
         public Branch? Branch { get; set; }
         public int BranchId { get; set; }
         public Town? Town { get; set; }

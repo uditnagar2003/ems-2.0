@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BaseLibrary.DTOs
 {
-    public  class AccountBase
+    public class AccountBase
     {
         [DataType(DataType.EmailAddress)]
         [EmailAddress]

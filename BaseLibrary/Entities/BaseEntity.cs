@@ -12,9 +12,9 @@ namespace BaseLibrary.Entities
         public int id { get; set; }
         public string? name { get; set; }
 
-        [JsonIgnore]
+       /* [JsonIgnore]
 
-        public List<Employee> Employees { get; set; }
+        public List<Employee> Employees { get; set; }*/
 
     }
 }
