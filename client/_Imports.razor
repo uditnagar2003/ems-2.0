@@ -17,6 +17,7 @@
 @using Microsoft.AspNetCore.Components 
 @using ClientLibrary.Services.contract
 @using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.DropDowns
 
 
@@ -24,6 +25,7 @@
 
 @using client.Pages.Other_Pages
 @using client.Pages.Content_Pages.DepartmentPages
+@using client.Pages.Content_Pages.LocationPages
 
 
 @inject AuthenticationStateProvider AuthStateProvider
@@ -40,13 +42,13 @@
 @* /GD / Deparmtent / branch*@
 @inject IGenericImplementation<GeneralDepartment> generalDepartmentService
 @inject IGenericImplementation<Department> departmentService
-@inject IGenericImplementation<Branch> branchServcie
+@inject IGenericImplementation<Branch> branchService
 @*/country / city /town*@
-@inject IGenericImplementation<Country> countryServcie
-@inject IGenericImplementation<City> cityServcie
-@inject IGenericImplementation<Town> townServcie
+@inject IGenericImplementation<Country> countryService
+@inject IGenericImplementation<City> cityService
+@inject IGenericImplementation<Town> townService
 @*Employee*@
-@inject IGenericImplementation<Employee> employeeServcie
+@inject IGenericImplementation<Employee> employeeService
 
 
 
