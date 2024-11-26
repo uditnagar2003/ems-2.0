@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace serverLibrary.Respositories.Implementations
 {
-    internal class TownRepository(AppDbContext appDbContext) :IGenericRepositoryInterface<Town>
+     public class TownRepository(AppDbContext appDbContext) :IGenericRepositoryInterface<Town>
     {
         public async Task<GeneralResponse> DeleteById(int id)
         {

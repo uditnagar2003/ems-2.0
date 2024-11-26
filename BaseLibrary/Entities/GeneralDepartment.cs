@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BaseLibrary.Entities
@@ -9,8 +10,8 @@ namespace BaseLibrary.Entities
     public class GeneralDepartment : BaseEntity
     {
         // one to many relationship with department
-
-        public List<Department> Departments { get; set; }
+        [JsonIgnore]
+        public List<Department>? Departments { get; set; }
 
     }
 }

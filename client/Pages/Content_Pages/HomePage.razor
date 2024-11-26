@@ -1,9 +1,8 @@
 ﻿@page "/home/dashboard"
-@using client.Pages.Administration_Pages
-@using client.Pages.DepartmentPages
 @layout MainLayout
 <TableBanner />
 <GeneralDepartmentPage/>
+<DepartmentPage/>
 @code {
    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
     protected async override Task OnInitializedAsync()

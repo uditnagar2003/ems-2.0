@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace serverLibrary.Respositories.Implementations
 {
-    internal class CountryRepository(AppDbContext appDbContext) : IGenericRepositoryInterface<Country>
+    public class CountryRepository(AppDbContext appDbContext) : IGenericRepositoryInterface<Country>
 
     {
         public async Task<GeneralResponse> DeleteById(int id)

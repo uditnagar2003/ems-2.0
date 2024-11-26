@@ -24,5 +24,18 @@ namespace server.Controllers
             if (id <= 0) return BadRequest("invalid request");
             return Ok(await genericRepositoryInterface.GetById(id));
 
+        }
+        [HttpPost("add")]
+        public async Task<IActionResult> Add(T model)
+        {
+            if (model is null) return BadRequest("Bad Request Made");
+            return Ok(await genericRepositoryInterface.Insert(model));
+        }
+        [HttpPut("update")]
+        public async Task<IActionResult> Update(T model)
+        {
+            if (model is null) return BadRequest("Bad Request");
+            return Ok(await genericRepositoryInterface.Update(model));  
+        }
     }
 }

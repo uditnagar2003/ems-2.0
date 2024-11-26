@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using serverLibrary.Data;
 
@@ -11,9 +12,11 @@ using serverLibrary.Data;
 namespace serverLibrary.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241122054655_GDc")]
+    partial class GDc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,9 +338,6 @@ namespace serverLibrary.Data.Migrations
 
                     b.Property<DateTime>("PunishmentDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("SanctionId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("SanctionTypeid")
                         .HasColumnType("int");
