@@ -23,7 +23,10 @@ namespace serverLibrary.Respositories.Implementations
             return Success();
         }
 
-        public async Task<List<City>> GetAll() => await appDbContext.Cities.ToListAsync();
+        public async Task<List<City>> GetAll() => await appDbContext.Cities
+            .AsNoTracking()
+            .Include(C=>C.Country)
+            .ToListAsync();
 
         public async Task<City> GetById(int id) => await appDbContext.Cities.FindAsync(id);
 
@@ -48,6 +51,7 @@ namespace serverLibrary.Respositories.Implementations
             var dep = await appDbContext.Cities.FindAsync(item.id);
             if (dep is null) return NotFound();
             dep.name = item.name;
+            dep.CountryId = item.CountryId;
             await Commit();
             return Success();
         }

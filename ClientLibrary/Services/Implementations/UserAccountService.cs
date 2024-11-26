@@ -1,4 +1,5 @@
 ﻿using BaseLibrary.DTOs;
+using BaseLibrary.Entities;
 using BaseLibrary.Responses;
 using ClientLibrary.Helpers;
 using ClientLibrary.Services.contract;
@@ -25,6 +26,21 @@ namespace ClientLibrary.Services.Implementations
             return await result.Content.ReadFromJsonAsync<GeneralResponse>();
         }
 
+        public Task<GeneralResponse> DeleteUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SystemRole>> GetRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ManageUsers>> GetUsers()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<LoginResponse> RefreshTokenAsync(RefreshToken token)
         {
             //weather implemented
@@ -44,11 +60,11 @@ namespace ClientLibrary.Services.Implementations
             return await result.Content.ReadFromJsonAsync<LoginResponse>()!;
         }
 
-        
-        /* public Task<GeneralResponse> RefreshTokenAsync(RefreshToken token)
-         {
+        public Task<GeneralResponse> UpdateUser(ManageUsers user)
+        {
+            throw new NotImplementedException();
+        }
 
-         }*/
 
-    }
+   }
 }

@@ -76,6 +76,15 @@
                      <hr/>
                  </li>
                   <li style="list-style:none" class="cusorStyle">
+                                <a class="nav-link p-2" @onclick="CountryClicked">
+                         <div class="hstack">
+                             <span class="bi bi-geo-alt fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                             <span>Country</span>
+                         </div>
+                     </a>
+                 </li>
+                
+                  <li style="list-style:none" class="cusorStyle">
                                 <a class="nav-link p-2" @onclick="CityClicked">
                          <div class="hstack">
                              <span class="bi bi-pin-map fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
@@ -88,14 +97,6 @@
                          <div class="hstack">
                              <span class="bi bi-pin-map-fill fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
                              <span>Town</span>
-                         </div>
-                     </a>
-                 </li>
-                 <li style="list-style:none" class="cusorStyle">
-                                <a class="nav-link p-2" @onclick="CountryClicked">
-                         <div class="hstack">
-                             <span class="bi bi-geo-alt fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
-                             <span>Country</span>
                          </div>
                      </a>
                  </li>

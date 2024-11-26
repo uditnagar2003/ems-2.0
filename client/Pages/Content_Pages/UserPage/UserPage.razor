@@ -2,18 +2,18 @@
 @*using BaseLibrary.Entities
 @using client.ApplicationStates*@
     @implements IDisposable
-@*inject CountryState countryState*@
-@if (allState.ShowCity)
+@*inject SystemRoleState countryState*@
+@if (allState.ShowManageUsers)
 {
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="float-start">City</h4>
+                        <h4 class="float-start">ManageUsers</h4>
                         <button class="btn btn-outline-success float-end" @onclick="AddButtonClicked">
                             <i class="bi bi-plus-circle-dotted"></i>
-                            Add City
+                            Add ManageUsers
                         </button>
                     </div>
                     <div class="card-header" style="max-height:500px; overflow:hidden; overflow-y:scroll;">
@@ -23,21 +23,21 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Id</th>
-                                        <th scope="col">Country</th>
-                                        <th scope="col">City</th>
+                                        <th scope="col">SystemRole</th>
+                                        <th scope="col">ManageUsers</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Cities != null)
+                                    @if (ManageUsers != null)
                                     {
                                        int count = 1;
-                                        foreach (var item in Cities)
+                                        foreach (var item in ManageUsers)
                                         {
                                             <tr>
                                                 <th scope="row">@count</th>
                                                 <td>@item.id</td>
-                                                <td>@item.Country!.name</td>
+                                                <td>@item.SystemRole!.name</td>
                                                 <td>@item.name</td>
                                                 <td>
                                                     <i class="bi bi-pencil text-info" id="cursorStyle"
@@ -53,7 +53,7 @@
                                     else
                                     {
                                         <tr>
-                                            <td colspan="4"><div class="alert alert-info text-center">No City Added Yet!</div></td>
+                                            <td colspan="4"><div class="alert alert-info text-center">No ManageUsers Added Yet!</div></td>
                                         </tr>
                                     }
 
@@ -67,10 +67,10 @@
     </div>
     
 }
-<CityDialog @ref="cityDialog"
+<ManageUsersDialog @ref="cityDialog"
             HandleSaveOperationEvents="HandleSaveOperationEvent"
-            City="City"
-            Countries="Countries" />
+            ManageUsers="ManageUsers"
+            SystemRoles="SystemRoles" />
 
 
 
@@ -81,56 +81,47 @@
 </style>
 @code
 {
-    CityDialog? cityDialog;
-    City City = new();
+    UserDialog? userDialog;
+    ManageUsers ManageUser = new();
     public string Title { get; set; } = "Add";
-    public List<City> Cities { get; set; } = new();
+    public List<ManageUsers> ManageUsers { get; set; } = new();
 
-    public List<Country> Countries { get; set; } = new();
+    public List<SystemRole> SystemRoles { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
-        await GetCountries();
-        await GetCities();
-       
+        await GetRoles();
+        await GetUsers();
+
         allState.Action += StateHasChanged;
     }
-    private async Task GetCountries()
+    private async Task GetRoles()
     {
-        Countries = await countryService.GetAll(Constants1.CountryBaseUrl);
+        SystemRoles = await accountService.GetRoles();
     }
-    private async Task GetCities()
+    private async Task GetUsers()
     {
-        Cities = await cityService.GetAll(Constants1.CityBaseUrl);
+        ManageUsers = await accountService.GetUsers();
     }
     void OpenDialog()
     {
-        cityDialog?.OpenDialog();
+        userDialog?.OpenDialog();
     }
     async Task AddButtonClicked()
     {
         cityDialog?.ChangeTitle("Add");
-        City = new();
-        await GetCountries();
+        ManageUsers = new();
+        await GetSystemRoles();
         OpenDialog();
     }
-    private async Task HandleSaveOperationEvent()
+    private async Task HandleSaveOperationEvent(ManageUsers manageUsers)
     {
-        bool successCheck = false;
-        if (City.id > 0)
-        {
-            var result = await cityService.Update(City, Constants1.CityBaseUrl);
-            successCheck = await DisplayMessage(result.Flag, result.Message);
-        }
-        else
-        {
-            var response = await cityService.Insert(City, Constants1.CityBaseUrl);
-            successCheck = await DisplayMessage(response.Flag, response.Message);
-        }
+        var result = await accountService.UpdateUser(manageUsers);
+        bool successCheck = await DisplayMessage(result.Flag,result.Message);
         if (successCheck)
         {
-            City = new();
-            await GetCities();
-            cityDialog?.ChangeTitle("Add");
+            ManageUsers = new();
+            await GetUsers();
+            
         }
 
     }
@@ -149,22 +140,20 @@
 
         }
     }
-    private async Task EditClicked(City dep)
+    private async Task EditClicked(ManageUsers dep)
     {
-        cityDialog?.ChangeTitle("Update");
-        City = dep;
-        await GetCountries();
+        ManageUser = dep;
         OpenDialog();
     }
-    private async void DeleteClicked(City dep)
+    private async void DeleteClicked(ManageUsers dep)
     {
-        bool confirm = await dialogService.ConfirmAsync($"Do you want to delete {dep.name}", "Confirm Delete");
+        bool confirm = await dialogService.ConfirmAsync($"Do you want to delete {dep.Name}", "Confirm Delete");
         if (!confirm) return;
-        var response = await cityService.DeleteById(dep.id, Constants1.CityBaseUrl);
+        var response = await accountService.DeleteUser(dep.UserId);
         var result = await DisplayMessage(response.Flag, response.Message);
         if (response.Flag)
         {
-            await GetCities();
+            await GetUsers();
             StateHasChanged();
 
         }
