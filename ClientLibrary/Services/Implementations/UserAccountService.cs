@@ -26,21 +26,7 @@ namespace ClientLibrary.Services.Implementations
             return await result.Content.ReadFromJsonAsync<GeneralResponse>();
         }
 
-        public Task<GeneralResponse> DeleteUser(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<SystemRole>> GetRoles()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<ManageUsers>> GetUsers()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<LoginResponse> RefreshTokenAsync(RefreshToken token)
         {
             //weather implemented
@@ -60,11 +46,43 @@ namespace ClientLibrary.Services.Implementations
             return await result.Content.ReadFromJsonAsync<LoginResponse>()!;
         }
 
-        public Task<GeneralResponse> UpdateUser(ManageUsers user)
+        //user roles
+        public async Task<GeneralResponse> DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            var httpCLient = await getHttpClient.GetPrivateHttpClient();
+            var result = await httpCLient.DeleteAsync($"{AuthUrl}/delete-user/{id}");
+            if (!result.IsSuccessStatusCode)
+                return new GeneralResponse(false, "Error Occured");
+            return await result.Content.ReadFromJsonAsync<GeneralResponse>();
+
+        }
+
+        public async Task<List<SystemRole>> GetRoles()
+        {
+            var httpCLient = await getHttpClient.GetPrivateHttpClient();
+            var result = await httpCLient.GetFromJsonAsync<List<SystemRole>>($"{AuthUrl}/roles");
+            return result!;
+
+        }
+
+        public async Task<List<ManageUsers>> GetUsers()
+        {
+            var httpClient = await getHttpClient.GetPrivateHttpClient();
+            var result = await httpClient.GetFromJsonAsync<List<ManageUsers>>($"{AuthUrl}/users");
+            return result!;
+        }
+
+        public async Task<GeneralResponse> UpdateUser(ManageUsers user)
+        {
+            var httpCLient = getHttpClient.GetPublicHttpClient();
+            var result = await httpCLient.PutAsJsonAsync($"{AuthUrl}/update-user", user);
+            if (!result.IsSuccessStatusCode)
+                return new GeneralResponse(false, "Error Occured");
+            return await result.Content.ReadFromJsonAsync<GeneralResponse>();
+
+
         }
 
 
-   }
+    }
 }

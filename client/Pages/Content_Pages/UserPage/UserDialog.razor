@@ -17,9 +17,9 @@
                         </div>
                         <div class="form-group ">
                             <label class="form-label">Select Role</label>
-                            @if (string.IsNullOrEmpty(ManageUsers.Role))
+                            @if (!string.IsNullOrEmpty(ManageUsers.Role))
                             {
-                                string selected = ManageUsers!.Role!;
+                                string selected = ManageUsers.Role!;
                                 <SfDropDownList TValue="string" TItem="SystemRole" Placeholder="@selected" DataSource="SystemRoles">
                                     <DropDownListFieldSettings Value="Name" Text="Name"></DropDownListFieldSettings>
                                     <DropDownListEvents TValue="string" TItem="SystemRole" ValueChange="OnValueChange"></DropDownListEvents>

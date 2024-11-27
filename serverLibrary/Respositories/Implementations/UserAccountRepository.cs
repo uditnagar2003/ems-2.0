@@ -172,5 +172,57 @@ namespace serverLibrary.Respositories.Implementations
                
 
         }
+
+        public async Task<List<ManageUsers>> GetUsers()
+        {
+            var allUsers = await GetApplicationUsers();
+            var allUserRoles = await UserRoles();
+            var allRoles = await SystemRoles();
+
+            if(allUsers.Count ==0 || allRoles.Count ==0) return null;
+            var users = new List<ManageUsers>();
+            foreach(var user in allUsers)
+            {
+                var userRole = allUserRoles.FirstOrDefault(u => u.UserId == user.id);
+                var roleName = allRoles.FirstOrDefault(u => u.Id == userRole!.RoleId);
+                users.Add(new ManageUsers() { UserId=user.id,Name=user.Fullname,Email=user.Email!,Role = roleName!.Name!});
+
+            }
+            return users;
+        }
+
+        private async Task<List<SystemRole>> SystemRoles()
+        {
+            return await appDbContext.SystemRoles.AsNoTracking().ToListAsync();
+        }
+
+        private async Task<List<UserRole>> UserRoles()
+        {
+            return await appDbContext.UserRoles.AsNoTracking().ToListAsync();
+        }
+
+        private async Task<List<ApplicationUser>> GetApplicationUsers()
+        {
+           return await appDbContext.ApplicationUsers.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<GeneralResponse> UpdateUser(ManageUsers user)
+        {
+            var getRole = (await SystemRoles()).FirstOrDefault(r => r.Name!.Equals(user.Role));
+            var userRole = await appDbContext.UserRoles.FirstOrDefaultAsync(u => u.UserId == user.UserId);
+            userRole!.RoleId = getRole.Id;
+            await appDbContext.SaveChangesAsync();
+            return new GeneralResponse(true, "Use Roles Updated Successfully");
+        }
+
+        public async Task<List<SystemRole>> GetRoles() => await SystemRoles();
+
+        public async Task<GeneralResponse> DeleteUser(int id)
+        {
+            var user = await appDbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.id == id);
+            appDbContext.ApplicationUsers.Remove(user!);
+            await appDbContext.SaveChangesAsync();
+            return new GeneralResponse(true, "User Deleted SUccessfully");
+        }
     }
 }

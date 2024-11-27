@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@inject AuthenticationStateProvider AuthStateProvider
 @*@inject NavigationManager NavManager*@
 @code{
     [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
@@ -9,7 +9,13 @@
         var user = (await AuthenticationState).User;
         Console.WriteLine("this Authentication page" + user.Identity.IsAuthenticated);
         if (user.Identity!.IsAuthenticated)
-            NavManager.NavigateTo("/home/dashboard");
+        {
+            /*var logoutModel = new UserSession();
+            var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+            await customAuthStateProvider.UpdateAuthenticationState(logoutModel);
+            */
+            NavManager.NavigateTo/*("/identity/account/login");*/("/home/dashboard");
+        }
         else
             NavManager.NavigateTo("/identity/account/login");
     }
