@@ -47,7 +47,7 @@
 <AddOrUpdateEmployee ShowAddOrUpdateEmployee="ShowAddOrUpdatePage" />
 @code {
     public List<Employee> Employees { get; set; } = new();
-
+  
     private async Task LoadEmployees()
     {
         Employees = await employeeService.GetAll(Constants1.EmployeeBaseUrl);

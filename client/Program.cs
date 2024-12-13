@@ -6,13 +6,18 @@ using ClientLibrary.Helpers;
 using Microsoft.AspNetCore.Components.Authorization;
 using ClientLibrary.Services.contract;
 using ClientLibrary.Services.Implementations;
-using Syncfusion.Blazor.Popups;
+//using Syncfusion.Blazor.Popups;
 using Syncfusion.Blazor;
 using client.ApplicationStates;
 using BaseLibrary.Entities;
+using Syncfusion.Blazor.Popups;
 //using Syncfusion.Blazor.Popups;
+//Register Syncfusion license
+
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRGpGfV5ycEVHYlZQRnxeSk0DNHVRdkdnWH1fcnVXR2JdWU10V0s=");
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddTransient<CustomHttpHandler>();

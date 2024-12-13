@@ -56,7 +56,7 @@
             ShowUser = true;
             Action?.Invoke();
         }
-        public bool ShowEmployee { get; set; } = false;
+        public bool ShowEmployee { get; set; } = true;
         public void EmployeeClicked()
         {
             ResetAllDepartment();
